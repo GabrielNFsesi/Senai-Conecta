@@ -1,144 +1,73 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>senai_conecta</title>
-
-    <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
- 
-    body {
-      font-family: Arial, Helvetica, sans-serif;
-      color: #1a2433;
-      background: #f3f5f8;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
- 
-    /* Cabeçalho */
-    header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      padding: 12px 24px;
-      background: #004a8f;
-      color: #fff;
-    }
-    .logo { font-weight: bold; font-size: 1.2rem; }
-    .pesquisa { flex: 1; max-width: 360px; }
-    .pesquisa input {
-      width: 100%;
-      padding: 8px 12px;
-      border: none;
-      border-radius: 20px;
-      font-size: 0.95rem;
-    }
-    .btn-entrar {
-      padding: 8px 18px;
-      border: 2px solid #fff;
-      border-radius: 6px;
-      background: transparent;
-      color: #fff;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    .btn-entrar:hover { background: #fff; color: #004a8f; }
- 
-    /* Conteúdo principal */
-    main {
-      flex: 1;
-      width: 100%;
-      max-width: 720px;
-      margin: 0 auto;
-      padding: 24px 16px;
-    }
-    main h1 { font-size: 1.4rem; margin-bottom: 16px; }
- 
-    /* Publicação */
-    .publicacao {
-      background: #fff;
-      border: 1px solid #d5dbe3;
-      border-radius: 8px;
-      padding: 16px;
-      margin-bottom: 16px;
-    }
-    .autor {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 12px;
-    }
-    .autor .nome { font-weight: bold; }
-    .autor .username { color: #6b7686; font-size: 0.9rem; }
-    .texto { margin-bottom: 12px; line-height: 1.5; }
-    .imagem {
-      width: 100%;
-      aspect-ratio: 16 / 9;
-      background: #e3e8ee;
-      border: 1px dashed #9aa5b4;
-      border-radius: 6px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #6b7686;
-      margin-bottom: 12px;
-    }
-    .curtir {
-      background: none;
-      border: none;
-      font-size: 1rem;
-      cursor: pointer;
-      color: #1a2433;
-    }
- 
-    /* Rodapé */
-    footer {
-      padding: 16px;
-      text-align: center;
-      background: #004a8f;
-      color: #fff;
-      font-size: 0.9rem;
-    }
-  </style>
+    <title>SENAI Conecta</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-
-    <header>
-        <div class="logo">SENAI Conecta</div>
-        <form class="pesquisa" role="search" onsubmit="return false">
-        <input type="search" placeholder="🔍 Pesquisa" aria-label="Pesquisa">
-        </form>
-        <button class="btn-entrar" type="button">ENTRAR</button>
+    <header class="header">
+        <div class="logo">SENAI CONECTA</div>
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Pesquisar @username...">
+        </div>
+        <div class="user-menu" id="userMenu">
+            <!-- Renderizado via JS conforme estado de autenticação -->
+        </div>
     </header>
 
+    <main class="container">
+        <section id="createPostSection" class="card hidden">
+            <h3>Criar Publicação</h3>
+            <form id="postForm">
+                <textarea id="postText" placeholder="O que você está pensando?" required></textarea>
+                <div class="form-actions">
+                    <input type="file" id="postImage" accept="image/*">
+                    <button type="submit" class="btn primary">Publicar</button>
+                </div>
+            </form>
+        </section>
 
-
-    <main>
-        <h1>PUBLICAÇÕES</h1>
- 
-        <article class="publicacao">
-        <div class="autor">
-            <span aria-hidden="true">👤</span>
-            <span class="nome">Usuário</span>
-            <span class="username">@username</span>
-        </div>
-    
-        <p class="texto">Texto da publicação...</p>
-    
-        <div class="imagem">[ EX IMAGEM ]</div>
-    
-        <button class="curtir" type="button">♡ 67</button>
-        </article>
+        <section id="feed" class="feed-container">
+            <!-- Feed renderizado dinamicamente -->
+        </section>
     </main>
 
+    <!-- Modal de Autenticação -->
+    <div id="authModal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeAuthModal()">&times;</span>
+            <div class="tabs">
+                <button id="tabLogin" class="tab-btn active" onclick="switchTab('login')">Login</button>
+                <button id="tabRegister" class="tab-btn" onclick="switchTab('register')">Cadastrar</button>
+            </div>
 
+            <form id="loginForm" class="auth-form">
+                <input type="email" id="loginEmail" placeholder="E-mail" required>
+                <input type="password" id="loginSenha" placeholder="Senha" required>
+                <div id="loginError" class="error-msg hidden"></div>
+                <button type="submit" class="btn primary">Entrar</button>
+            </form>
 
-    <footer>
-        &copy; 2026-2027 SENAI Conecta
+            <form id="registerForm" class="auth-form hidden">
+                <input type="text" id="regNome" placeholder="Nome Completo" required>
+                <input type="text" id="regUsername" placeholder="Nome de usuário (@username)" required>
+                <input type="email" id="regEmail" placeholder="E-mail" required>
+                <input type="password" id="regSenha" placeholder="Senha" required>
+                <input type="file" id="regFoto" accept="image/*">
+                <div id="regError" class="error-msg hidden"></div>
+                <button type="submit" class="btn primary">Cadastrar</button>
+            </form>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2026-2027 SENAI Conecta</p>
     </footer>
 
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/app.js"></script>
 </body>
 </html>
