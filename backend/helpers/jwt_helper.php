@@ -1,6 +1,6 @@
 <?php
 class JWTHelper {
-    private static string $secret = "MOVENDO_quem_MOVE_a_INDUSTRIA_chave_secreta";
+    private static string $secret = "SENAI_movendo_A_industria_2026";
 
     public static function encode(array $payload): string {
         $header = json_encode(['typ' => 'JWT', 'alg' => 'HS256']);
@@ -29,14 +29,15 @@ class JWTHelper {
         if ($base64UrlSignature !== $signatureProvided) return null;
 
         $payloadData = json_decode($payload, true);
-
         if (isset($payloadData['exp']) && $payloadData['exp'] < time()) return null;
 
         return $payloadData;
     }
+
     private static function base64UrlEncode(string $text): string {
         return str_replace(['+', '/', '='], ['-', '_', ''], base64_encode($text));
     }
+
     private static function base64UrlDecode(string $text): string {
         return base64_decode(str_replace(['-', '_'], ['+', '/'], $text));
     }
