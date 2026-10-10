@@ -18,8 +18,10 @@ async function apiFetch(endpoint, options = {}) {
     });
 
     const data = await response.json();
+
     if (!response.ok) {
         throw new Error(data.erro || 'Erro no processamento da requisição.');
     }
+
     return data;
 }

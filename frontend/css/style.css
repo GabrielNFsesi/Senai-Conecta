@@ -8,34 +8,94 @@
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+
 body { background-color: var(--background); color: var(--text); display: flex; flex-direction: column; min-height: 100vh; }
 
 .header {
     background: var(--primary); color: white; padding: 1rem 2rem;
-    display: flex; justify-content: space-between; align-items: center;
+    display: flex; justify-content: space-between; align-items: center; gap: 1rem;
 }
-.search-box input { padding: 0.5rem 1rem; border-radius: 20px; border: none; width: 250px; }
 
+.logo { color: white; text-decoration: none; font-weight: bold; }
+.header .btn { background: white; color: var(--primary); }
+.user-menu { display: flex; align-items: center; gap: 0.75rem; }
+.user-link { color: white; text-decoration: none; font-weight: bold; }
+.user-link:hover { text-decoration: underline; }
+
+/* ---------- Pesquisa ---------- */
+.search-box { position: relative; }
+.search-box input { padding: 0.5rem 1rem; border-radius: 20px; border: none; width: 250px; }
+.search-results {
+    position: absolute; top: calc(100% + 6px); left: 0; width: 100%; min-width: 250px;
+    background: var(--card); color: var(--text); border: 1px solid var(--border);
+    border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); z-index: 50; overflow: hidden;
+}
+.search-item {
+    display: flex; align-items: center; gap: 0.6rem; padding: 0.6rem 0.8rem;
+    color: inherit; text-decoration: none;
+}
+.search-item:hover { background: var(--background); }
+.search-empty { padding: 0.8rem; color: #777; font-size: 0.9rem; }
+
+/* ---------- Layout ---------- */
 .container { max-width: 600px; margin: 2rem auto; flex: 1; width: 100%; padding: 0 1rem; }
 .card { background: var(--card); padding: 1rem; border-radius: 8px; border: 1px solid var(--border); margin-bottom: 1.5rem; }
+.back-link { display: inline-block; margin-bottom: 1rem; color: var(--primary); text-decoration: none; }
+.back-link:hover { text-decoration: underline; }
+.empty-msg { color: #777; text-align: center; padding: 1rem; }
+
+/* ---------- Publicações ---------- */
 .post-card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 1rem; padding: 1rem; }
-.post-header { display: flex; justify-content: space-between; margin-bottom: 0.5rem; }
+.post-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
 .post-author { font-weight: bold; }
+.post-author-link { display: flex; align-items: center; gap: 0.6rem; color: inherit; text-decoration: none; }
+.post-author-link:hover .post-author { text-decoration: underline; color: var(--primary); }
 .post-image { width: 100%; max-height: 400px; object-fit: cover; border-radius: 6px; margin: 0.5rem 0; }
 .post-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 0.5rem; }
-
 .like-btn { background: none; border: none; cursor: pointer; font-size: 1.2rem; color: #666; }
 .like-btn.liked { color: var(--danger); }
 
+/* ---------- Avatares ---------- */
+.avatar { border-radius: 50%; object-fit: cover; flex-shrink: 0; width: 40px; height: 40px; }
+.avatar-sm { width: 36px; height: 36px; }
+.avatar-lg { width: 90px; height: 90px; }
+.avatar-fallback {
+    background: var(--primary); color: white; display: flex; align-items: center;
+    justify-content: center; font-weight: bold;
+}
+.avatar-lg.avatar-fallback { font-size: 2.2rem; }
+
+/* ---------- Perfil ---------- */
+.profile-card { display: flex; align-items: center; gap: 1.2rem; }
+.profile-info h2 { font-size: 1.3rem; }
+.profile-username { color: #777; margin-bottom: 0.4rem; }
+.badge { display: inline-block; background: var(--background); border: 1px solid var(--border); border-radius: 12px; padding: 0.1rem 0.6rem; font-size: 0.8rem; }
+.profile-stats { display: flex; gap: 1.5rem; margin-top: 0.8rem; flex-wrap: wrap; }
+
+/* ---------- Modal / formulários ---------- */
 .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: flex; justify-content: center; align-items: center; }
 .modal.hidden, .hidden { display: none !important; }
 .modal-content { background: white; padding: 2rem; border-radius: 8px; width: 100%; max-width: 400px; position: relative; }
 .close-btn { position: absolute; top: 10px; right: 15px; cursor: pointer; font-size: 1.5rem; }
-
+.tabs { display: flex; gap: 0.5rem; }
+.tab-btn { flex: 1; padding: 0.5rem; border: none; border-bottom: 2px solid var(--border); background: none; cursor: pointer; font-weight: bold; color: #777; }
+.tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); }
 .auth-form { display: flex; flex-direction: column; gap: 0.8rem; margin-top: 1rem; }
 .auth-form input { padding: 0.6rem; border: 1px solid var(--border); border-radius: 4px; }
+#postForm { display: flex; flex-direction: column; gap: 0.8rem; margin-top: 0.8rem; }
+#postForm textarea { padding: 0.6rem; border: 1px solid var(--border); border-radius: 4px; resize: vertical; min-height: 80px; }
+.form-actions { display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; }
+
 .btn { padding: 0.6rem 1rem; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
 .btn.primary { background: var(--primary); color: white; }
 .error-msg { color: var(--danger); font-size: 0.85rem; }
 
 .footer { text-align: center; padding: 1rem; background: #e9ecef; border-top: 1px solid var(--border); }
+
+@media (max-width: 600px) {
+    .header { flex-wrap: wrap; padding: 1rem; }
+    .search-box { order: 3; width: 100%; }
+    .search-box input { width: 100%; }
+    .profile-card { flex-direction: column; text-align: center; }
+    .profile-stats { justify-content: center; }
+}

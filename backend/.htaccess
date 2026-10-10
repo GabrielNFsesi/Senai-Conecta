@@ -1,6 +1,8 @@
 RewriteEngine On
 
+# Garante que o cabeçalho Authorization chegue ao PHP (o Apache/XAMPP pode descartá-lo)
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-
 RewriteRule ^(.*)$ index.php [QSA,L]

@@ -3,37 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SENAI Conecta</title>
+    <title>Perfil - SENAI Conecta</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <header class="header">
-        <div class="logo">SENAI CONECTA</div>
+        <a href="index.html" class="logo">SENAI CONECTA</a>
         <div class="search-box">
-            <input type="text" id="searchInput" placeholder="Pesquisar @username...">
+            <input type="text" id="searchInput" placeholder="Pesquisar @username..." autocomplete="off">
+            <div id="searchResults" class="search-results hidden"></div>
         </div>
         <div class="user-menu" id="userMenu">
             <!-- Renderizado via JS conforme estado de autenticação -->
         </div>
     </header>
-
+ 
     <main class="container">
-        <section id="createPostSection" class="card hidden">
-            <h3>Criar Publicação</h3>
-            <form id="postForm">
-                <textarea id="postText" placeholder="O que você está pensando?" required></textarea>
-                <div class="form-actions">
-                    <input type="file" id="postImage" accept="image/*">
-                    <button type="submit" class="btn primary">Publicar</button>
-                </div>
-            </form>
+        <a href="index.html" class="back-link">&larr; Voltar ao feed</a>
+ 
+        <section id="profileHeader" class="card profile-card">
+            <p>Carregando perfil...</p>
         </section>
-
-        <section id="feed" class="feed-container">
-            <!-- Feed renderizado dinamicamente -->
+ 
+        <section id="profilePosts" class="feed-container">
+            <!-- Publicações do usuário renderizadas dinamicamente -->
         </section>
     </main>
-
+ 
     <!-- Modal de Autenticação -->
     <div id="authModal" class="modal hidden">
         <div class="modal-content">
@@ -42,14 +38,14 @@
                 <button id="tabLogin" class="tab-btn active" onclick="switchTab('login')">Login</button>
                 <button id="tabRegister" class="tab-btn" onclick="switchTab('register')">Cadastrar</button>
             </div>
-
+ 
             <form id="loginForm" class="auth-form">
                 <input type="email" id="loginEmail" placeholder="E-mail" required>
                 <input type="password" id="loginSenha" placeholder="Senha" required>
                 <div id="loginError" class="error-msg hidden"></div>
                 <button type="submit" class="btn primary">Entrar</button>
             </form>
-
+ 
             <form id="registerForm" class="auth-form hidden">
                 <input type="text" id="regNome" placeholder="Nome Completo" required>
                 <input type="text" id="regUsername" placeholder="Nome de usuário (@username)" required>
@@ -61,17 +57,15 @@
             </form>
         </div>
     </div>
-
-    <!---->
-
+ 
     <footer class="footer">
         <p>&copy; 2026-2027 SENAI Conecta</p>
     </footer>
-
+ 
     <script src="js/api.js"></script>
     <script src="js/posts.js"></script>
     <script src="js/auth.js"></script>
     <script src="js/search.js"></script>
-    <script src="js/app.js"></script>
+    <script src="js/perfil.js"></script>
 </body>
 </html>

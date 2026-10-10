@@ -1,6 +1,6 @@
 <?php
 class JWTHelper {
-    private static string $secret = "SENAI_movendo_A_industria_2026";
+    private static string $secret = "";
 
     public static function encode(array $payload): string {
         $header = json_encode(['typ' => 'JWT', 'alg' => 'HS256']);
