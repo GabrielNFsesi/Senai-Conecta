@@ -14,7 +14,22 @@ async function loadProfile() {
     const username = new URLSearchParams(window.location.search).get('u');
  
     if (!username) {
-        header.innerHTML = `<p class="error-msg">Nenhum usuário informado.</p>`;
+        header.innerHTML = `
+            <div class="profile-cover"></div>
+            <div class="profile-body">
+                ${renderAvatar(perfil.foto, perfil.nome, 'avatar-lg')}
+                <div class="profile-info">
+                    <h2>${escapeHtml(perfil.nome)}</h2>
+                    <p class="profile-username">@${escapeHtml(perfil.username)}</p>
+                    <span class="badge">${perfil.tipo_perfil === 'criador' ? 'Criador' : 'Usuário'}</span>
+                </div>
+                <div class="profile-stats">
+                    <div><strong>${perfil.total_publicacoes}</strong>publicações</div>
+                    <div><strong>${perfil.total_curtidas_recebidas}</strong>curtidas recebidas</div>
+                </div>
+            </div>
+        `;
+ 
         postsBox.innerHTML = '';
         return;
     }
@@ -45,3 +60,4 @@ async function loadProfile() {
         postsBox.innerHTML = '';
     }
 }
+ 

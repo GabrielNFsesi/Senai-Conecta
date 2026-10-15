@@ -1,66 +1,5 @@
-// Barra de pesquisa por @username (usada na página inicial e no perfil)
-(function () {
-    const input = document.getElementById('searchInput');
-    const box = document.getElementById('searchResults');
-    if (!input || !box) return;
-
-    let timer;
-
-    input.addEventListener('input', () => {
-        clearTimeout(timer);
-        timer = setTimeout(runSearch, 300);
-    });
-
-    input.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            clearTimeout(timer);
-            runSearch();
-        }
-    });
-
-    // fecha a lista ao clicar fora da barra
-    document.addEventListener('click', (e) => {
-        if (!e.target.closest('.search-box')) box.classList.add('hidden');
-    });
-
-    input.addEventListener('focus', () => {
-        if (box.innerHTML.trim() !== '') box.classList.remove('hidden');
-    });
-
-    async function runSearch() {
-        const termo = input.value.trim().replace(/^@/, '');
-
-        if (termo === '') {
-            box.innerHTML = '';
-            box.classList.add('hidden');
-            return;
-        }
-
-        try {
-            const usuarios = await apiFetch('/usuarios?busca=' + encodeURIComponent(termo));
-
-            if (usuarios.length === 0) {
-                box.innerHTML = `<div class="search-empty">Nenhum usuário encontrado para "${escapeHtml(termo)}".</div>`;
-            } else {
-                box.innerHTML = usuarios.map(u => `
-                    <a class="search-item" href="${profileUrl(u.username)}">
-                        ${renderAvatar(u.foto, u.nome, 'avatar-sm')}
-                        <div>
-                            <div class="post-author">${escapeHtml(u.nome)}</div>
-                            <small style="color:#777">@${escapeHtml(u.username)}</small>
-                        </div>
-                    </a>
-                `).join('');
-            }
-        } catch (err) {
-            box.innerHTML = `<div class="search-empty">${escapeHtml(err.message)}</div>`;
-        }
-        box.classList.remove('hidden');
-    }
-})();
-
-
+// Barra de pesquisa por @username (usada em index.html e perfil.html)
+// Versão independente: só precisa de api.js carregado antes (usa API_BASE_URL e apiFetch).
 (function () {
     function init() {
         const input = document.getElementById('searchInput');
@@ -80,22 +19,25 @@
             wrapper.appendChild(box);
         }
  
+        // remove classes herdadas do HTML (ex.: "hidden" tem display:none !important e impediria de abrir)
+        box.className = '';
+ 
         // estilos próprios da caixa (não dependem do style.css)
         const style = document.createElement('style');
         style.textContent = `
-            #searchResults { display: none; position: absolute; top: calc(100% + 6px); left: 0; width: 100%;
-                min-width: 260px; background: #fff; color: #333; border: 1px solid #e0e0e0; border-radius: 8px;
-                box-shadow: 0 4px 12px rgba(0,0,0,.15); z-index: 1000; overflow: hidden; }
+            #searchResults { display: none; position: absolute; top: calc(100% + 8px); left: 0; width: 100%;
+                min-width: 260px; background: #fff; color: #10234a; border: 1px solid #d6e2f2; border-radius: 14px;
+                box-shadow: 0 12px 32px rgba(20,33,61,.16); z-index: 1000; overflow: hidden; padding: .35rem; }
             #searchResults.open { display: block; }
-            #searchResults .s-item { display: flex; align-items: center; gap: .6rem; padding: .6rem .8rem;
-                color: inherit; text-decoration: none; }
-            #searchResults .s-item:hover { background: #f4f6f8; }
-            #searchResults .s-avatar { width: 36px; height: 36px; border-radius: 50%; object-fit: cover;
-                background: #0056b3; color: #fff; display: flex; align-items: center; justify-content: center;
+            #searchResults .s-item { display: flex; align-items: center; gap: .7rem; padding: .55rem .65rem;
+                color: inherit; text-decoration: none; border-radius: 10px; }
+            #searchResults .s-item:hover { background: #eaf1fa; }
+            #searchResults .s-avatar { width: 38px; height: 38px; border-radius: 50%; object-fit: cover;
+                background: #0b4ea2; color: #fff; display: flex; align-items: center; justify-content: center;
                 font-weight: bold; flex-shrink: 0; }
-            #searchResults .s-name { font-weight: bold; }
-            #searchResults .s-user { color: #777; font-size: .85rem; }
-            #searchResults .s-msg { padding: .8rem; color: #777; font-size: .9rem; }
+            #searchResults .s-name { font-weight: 700; line-height: 1.25; }
+            #searchResults .s-user { color: #667085; font-size: .85rem; }
+            #searchResults .s-msg { padding: .8rem; color: #667085; font-size: .9rem; }
         `;
         document.head.appendChild(style);
  
@@ -191,3 +133,4 @@
         init();
     }
 })();
+ 

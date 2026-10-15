@@ -6,7 +6,10 @@ function checkAuth() {
  
     if (token && user) {
         userMenu.innerHTML = `
-            <a href="perfil.html?u=${encodeURIComponent(user.username)}" class="user-link">@${escapeHtml(user.username)}</a>
+            <a href="perfil.html?u=${encodeURIComponent(user.username)}" class="user-link">
+                ${renderAvatar(user.foto, user.nome || user.username, 'avatar-sm')}
+                <span>@${escapeHtml(user.username)}</span>
+            </a>
             <button class="btn" onclick="logout()">Sair</button>
         `;
         // Somente o tipo "criador" pode publicar; "usuario" apenas visualiza e curte
@@ -89,3 +92,4 @@ document.getElementById('registerForm').addEventListener('submit', async (e) => 
         errorDiv.classList.remove('hidden');
     }
 });
+ 
